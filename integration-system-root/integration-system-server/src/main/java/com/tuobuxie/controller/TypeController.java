@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tuobuxie.domain.Type;
 import com.tuobuxie.repository.TypeRepository;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.apachecommons.CommonsLog;
 
 /**
@@ -21,33 +24,42 @@ import lombok.extern.apachecommons.CommonsLog;
 @RestController
 @RequestMapping("/type")
 @CommonsLog
+@Api(value="增删查看类型",tags="类型接口")
+
 public class TypeController {
 
 	@Autowired
 	TypeRepository typeRepository;
 
+	@ApiOperation("新增类型接口")
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public Type save(@RequestBody  Type type) {
-    	typeRepository.save(type);
+		type =typeRepository.save(type);
 
         return type;
     }
+	@ApiOperation("删除类型接口")
+
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public String del(@PathVariable Long id) {
+    public String del(@ApiParam(value = "类型id",required = true) @PathVariable Long id) {
     	typeRepository.deleteById(id);
         return "00";
     }
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public Type update(@PathVariable Long id ,@RequestBody  Type type) {
-    	type.setTypeId(id);
-    	typeRepository.save(type);
+	@ApiOperation("修改类型接口")
+
+    @RequestMapping( method = RequestMethod.PUT)
+    public Type update(@RequestBody  Type type) {
+		type =typeRepository.save(type);
         return type;
     }
+	@ApiOperation("根据id查找类型接口")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Optional<Type>  get(@PathVariable Long id ) {
+    public Optional<Type>  get(@ApiParam(value = "类型id",required = true)@PathVariable Long id ) {
 
         return typeRepository.findById(id);
     }
+	@ApiOperation("查看所有类型接口")
+
     @RequestMapping(value = "/findall", method = RequestMethod.GET)
     public List<Type>  findAll( ) {
 
