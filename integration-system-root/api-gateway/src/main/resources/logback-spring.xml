@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 seconds">
+
+    <springProperty scope="context" name="springAppName"
+    				source="spring.application.name" />
+
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%date [%X{X-B3-TraceId:-}] [%X{X-B3-ParentSpanId:-}] [%X{X-B3-SpanId:-}] [${PID:-}] [%thread] %-5level %logger{36} => %msg%n" />
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+    	<withJansi>true</withJansi>
+		<encoder>
+           <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+		   <charset>utf8</charset>
+   		</encoder>
+    </appender>
+
+    <appender name="logstash"
+    	class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+    	<destination>172.20.21.113:4567</destination>
+    	<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+    		<providers>
+    			<timestamp>
+    				<timeZone>UTC</timeZone>
+    			</timestamp>
+    			<pattern>
+    				<pattern>
+    					{
+    					  "tags":"spring-cloud-test",
+    					  "severity":"%level",
+    					  "service": "${springAppName:-}",
+                          "trace": "%X{X-B3-TraceId:-}",
+                          "span": "%X{X-B3-SpanId:-}",
+                          "exportable": "%X{X-Span-Export:-}",
+                          "pid": "${PID:-}",
+                          "thread": "%thread",
+                          "class": "%logger{40}",
+                          "rest": "%message"
+    					}
+    				</pattern>
+    			</pattern>
+    		</providers>
+    	</encoder>
+    </appender>
+
+    <appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	  <File>main.log</File>
+	  <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	    <FileNamePattern>main.%d{yyyy-MM-dd}.log</FileNamePattern>
+	    <maxHistory>30</maxHistory>
+	  </rollingPolicy>
+	  <encoder>
+	    <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
+	  </encoder>
+	   <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+	    <level>DEBUG</level>
+	  </filter>
+	</appender>
+
+    <springProfile name="!production">
+        <logger name="com.myfee" level="DEBUG" />
+        <logger name="org.springframework.web" level="INFO"/>
+        <root level="info">
+	        <appender-ref ref="stdout" />
+	        <appender-ref ref="dailyRollingFileAppender" />
+	        <appender-ref ref="logstash" />
+	    </root>
+    </springProfile>
+
+    <springProfile name="production">
+		<logger name="com.myfee" level="DEBUG" />
+        <logger name="org.springframework.web" level="INFO"/>
+        <root level="info">
+	        <appender-ref ref="stdout" />
+	        <appender-ref ref="dailyRollingFileAppender" />
+	        <appender-ref ref="logstash" />
+	    </root>
+	</springProfile>
+</configuration>
