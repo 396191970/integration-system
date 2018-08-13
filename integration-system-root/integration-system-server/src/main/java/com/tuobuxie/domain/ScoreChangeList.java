@@ -22,6 +22,7 @@ public class ScoreChangeList implements Serializable {
 
 	@Column(nullable = false)
 	String userName;
+	String userId;
 
 	private Long typeId;
 
