@@ -24,7 +24,7 @@ import lombok.extern.apachecommons.CommonsLog;
 @RestController
 @RequestMapping("/User")
 @CommonsLog
-@Api(value="增删查看用户",tags="用户接口")
+@Api(value="增删查改用户",tags="用户接口")
 
 public class UserController {
 
@@ -58,7 +58,7 @@ public class UserController {
 
         return userRepository.findById(id);
     }
-	@ApiOperation("查看所有用户接口")
+	@ApiOperation("查改所有用户接口")
 
     @RequestMapping(value = "/findall", method = RequestMethod.GET)
     public List<User>  findAll( ) {

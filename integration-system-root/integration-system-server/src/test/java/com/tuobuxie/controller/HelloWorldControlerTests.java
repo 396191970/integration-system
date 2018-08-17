@@ -33,7 +33,7 @@ public class HelloWorldControlerTests {
 	public void getHello() throws Exception {
 		Type type = new Type();
 		type.setDescription("1234");
-		type.setScore(12);
+		type.setScore(12L);
 		type.setTypeName("test");
 
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders

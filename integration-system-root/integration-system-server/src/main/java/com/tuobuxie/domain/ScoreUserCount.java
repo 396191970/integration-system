@@ -9,36 +9,37 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.data.annotation.Transient;
+
 import lombok.Data;
 
 @Entity
 @Data
-public class ScoreStatistics  implements Serializable{
+public class ScoreUserCount implements Serializable {
 	private static final long serialVersionUID = 1L;
+
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long Id;
 
-	@Column(nullable = false)
+	@Transient
 	String userName;
 
-	@Column(nullable = false)
 	Long userId;
 
-	int scoreCount;
-
-	int joinCount;
-	int cancelCount;
-	int launchCount;
-	int plainCount;
-	int showCount;
-	int writeCount;
-	int moveThingsCount;
-	int buyCount;
-	int pictureCount;
+	Long sum;
 
 	@Column(nullable = false)
 	Date updateTime;
+
+	public ScoreUserCount( String userName, Long userId, Long sum) {
+		this.userName = userName;
+		this.userId = userId;
+		this.sum = sum;
+		this.updateTime = new Date();
+	}
+
+
 
 }

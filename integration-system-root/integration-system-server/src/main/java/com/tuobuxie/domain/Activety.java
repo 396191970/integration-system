@@ -1,6 +1,7 @@
 package com.tuobuxie.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,31 +15,25 @@ import lombok.Data;
 
 @Entity
 @Data
-@ApiModel(value="类型")
-public class Type implements Serializable{
+@ApiModel(value="活动")
+public class Activety implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-    @ApiModelProperty("类型id")
+    @ApiModelProperty("活动id")
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private Long typeId;
-    @ApiModelProperty("类型名称")
+	private Long id;
+    @ApiModelProperty("活动名称")
 
 	@Column(nullable = false)
-	String typeName;
-    @ApiModelProperty("积分值")
+	String activetyName;
 
-	@Column(nullable = false)
-    Long score;
-    @ApiModelProperty("类型描述")
+    @ApiModelProperty("活动描述")
 
 	String description;
 
-	@Override
-	public String toString() {
-		return "Type [typeId=" + typeId + ", typeName=" + typeName + ", score=" + score + ", description=" + description
-				+ "]";
-	}
+    @Column(nullable = false)
+	Date createTime;
 
 
 }

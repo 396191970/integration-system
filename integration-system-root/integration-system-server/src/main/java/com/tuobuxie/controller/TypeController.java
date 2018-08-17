@@ -24,7 +24,7 @@ import lombok.extern.apachecommons.CommonsLog;
 @RestController
 @RequestMapping("/type")
 @CommonsLog
-@Api(value="增删查看类型",tags="类型接口")
+@Api(value="增删查改类型",tags="类型接口")
 
 public class TypeController {
 
@@ -58,7 +58,7 @@ public class TypeController {
 
         return typeRepository.findById(id);
     }
-	@ApiOperation("查看所有类型接口")
+	@ApiOperation("查改所有类型接口")
 
     @RequestMapping(value = "/findall", method = RequestMethod.GET)
     public List<Type>  findAll( ) {

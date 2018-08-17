@@ -17,7 +17,7 @@ public static void main(String[] args) {
 	Type type = new Type();
 	type.setTypeId(1L);
 	type.setDescription("1234");
-	type.setScore(12);
+	type.setScore(12L);
 	type.setTypeName("test");
 	System.out.println(JSON.toJSONString(type));
 }
